@@ -1,0 +1,93 @@
+---
+# Ansible simple playbook to configure firewall rules for external dashboard access
+
+- name: Configure firewall for external dashboard access
+  hosts: 
+    - "{{ monitoring_group_name | default('monitoring') }}"
+    - "{{ mgr_group_name | default('mgrs') }}"
+  become: yes
+  gather_facts: false
+
+  tasks:
+    - name: Validate external networks configuration
+      fail:
+        msg: "dashboard_external_networks variable is not defined or empty"
+      when: dashboard_external_networks is not defined or dashboard_external_networks | length == 0
+      tags: [validation]
+
+    - name: Display external networks to be configured
+      debug:
+        msg: "Adding firewall access for external networks: {{ dashboard_external_networks }}"
+      tags: [info]
+
+    - name: Check if firewalld is running
+      systemd:
+        name: firewalld
+      register: firewalld_status
+      tags: [validation]
+
+    - name: Add external networks to public zone for dashboard access
+      ansible.posix.firewalld:
+        zone: public
+        source: "{{ item }}"
+        permanent: true
+        immediate: true
+        state: enabled
+      loop: "{{ dashboard_external_networks }}"
+      register: firewall_rules
+      when: firewalld_status.status.ActiveState == "active"
+      tags: [firewall]
+
+    - name: Verify firewall configuration
+      command: firewall-cmd --list-sources --zone=public
+      register: current_sources
+      changed_when: false
+      tags: [verification]
+
+    - name: Display current firewall sources
+      debug:
+        msg: "Current firewall sources in public zone: {{ current_sources.stdout }}"
+      when: current_sources is defined
+      tags: [verification, info]
+
+    - name: Test dashboard connectivity from monitoring host
+      uri:
+        url: "https://{{ grafana_server_addr | default(hostvars[groups['monitoring'][0]]['ansible_facts']['default_ipv4']['address']) }}:{{ dashboard_port | default('8443') }}"
+        method: HEAD
+        validate_certs: false
+        timeout: 10
+      register: dashboard_test
+      ignore_errors: true
+      when: 
+        - monitoring_group_name is defined
+        - monitoring_group_name in group_names
+      tags: [connectivity_test]
+
+    - name: Display connectivity test results
+      debug:
+        msg: |
+          Dashboard connectivity test:
+          {% if dashboard_test is defined and dashboard_test.status is defined %}
+          - Status: {{ dashboard_test.status }}
+          - Response: Success
+          {% else %}
+          - Status: Failed or not tested
+          {% endif %}
+      when: dashboard_test is defined
+      tags: [connectivity_test, info]
+
+    - name: Summary of configured services
+      debug:
+        msg: |
+          External network access has been configured for:
+          - Ceph Dashboard: https://{{ grafana_server_addr | default('MONITORING_HOST') }}:{{ dashboard_port | default('8443') }}
+          - Grafana: https://{{ grafana_server_addr | default('MONITORING_HOST') }}:{{ grafana_port | default('3000') }}
+          - Prometheus: http://{{ grafana_server_addr | default('MONITORING_HOST') }}:{{ prometheus_port | default('9092') }}
+          - AlertManager: http://{{ grafana_server_addr | default('MONITORING_HOST') }}:{{ alertmanager_port | default('9093') }}
+          
+          External networks with access:
+          {% for network in dashboard_external_networks %}
+          - {{ network }}
+          {% endfor %}
+      tags: [info, summary]
+      run_once: true

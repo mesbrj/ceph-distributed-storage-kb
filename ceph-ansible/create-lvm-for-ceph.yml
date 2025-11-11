@@ -1,0 +1,56 @@
+---
+# Ansible simple playbook to create LVM volumes for Ceph OSDs
+
+- name: Create LVM volumes for Ceph OSDs
+  hosts: osds
+  become: yes
+  gather_facts: false
+
+  tasks:
+    - name: Check if devices exist
+      stat:
+        path: "{{ item.device }}"
+      register: device_check
+      loop: "{{ ceph_lvm_config }}"
+      failed_when: not device_check.stat.exists
+      tags: [validation]
+
+    - name: Create physical volumes
+      community.general.lvg:
+        pvs: "{{ item.device }}"
+        vg: "{{ item.vg_name }}"
+        state: present
+      loop: "{{ ceph_lvm_config }}"
+      register: vg_creation
+      tags: [lvm, pv, vg]
+
+    - name: Create logical volumes with 100% of VG space
+      community.general.lvol:
+        vg: "{{ item.vg_name }}"
+        lv: "{{ item.lv_name }}"
+        size: 100%VG
+        state: present
+      loop: "{{ ceph_lvm_config }}"
+      tags: [lvm, lv]
+
+    - name: Display created LVM structure
+      shell: |
+        echo "=== Physical Volumes ==="
+        pvdisplay {{ item.device }}
+        echo "=== Volume Group: {{ item.vg_name }} ==="
+        vgdisplay {{ item.vg_name }}
+        echo "=== Logical Volume: {{ item.lv_name }} ==="
+        lvdisplay /dev/{{ item.vg_name }}/{{ item.lv_name }}
+        echo "================================"
+      loop: "{{ ceph_lvm_config }}"
+      register: lvm_info
+      tags: [info]
+
+    - name: Show LVM summary
+      debug:
+        msg: |
+          LVM Configuration completed successfully:
+          {% for config in ceph_lvm_config %}
+          - Device: {{ config.device }} -> VG: {{ config.vg_name }} -> LV: {{ config.lv_name }}
+          {% endfor %}
+      tags: [info]
