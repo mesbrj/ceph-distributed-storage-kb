@@ -1,7 +1,24 @@
----
-# Ansible simple playbook to create LVM volumes for Ceph OSDs
+#- name: Update Fedora Server Systems
+#  hosts: all
+#  become: yes
+#  gather_facts: false
 
-- name: Create LVM volumes for Ceph OSDs
+#- name: Uninstall Docker
+#  hosts: ceph_cluster
+#  become: yes
+#  gather_facts: false
+
+#- name: Install Podman on Fedora Server Systems
+#  hosts: ceph_cluster
+#  become: yes
+#  gather_facts: false
+
+#- name: Install ceph-common package on admin node
+#  hosts: admin
+#  become: yes
+#  gather_facts: false
+
+- name: LVM for Ceph OSDs
   hosts: osds
   become: yes
   gather_facts: false

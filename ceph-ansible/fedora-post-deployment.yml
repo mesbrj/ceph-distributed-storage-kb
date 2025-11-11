@@ -1,0 +1,49 @@
+
+- name: Configure firewall for external dashboard access
+  hosts: 
+    - "{{ monitoring_group_name | default('monitoring') }}"
+    - "{{ mgr_group_name | default('mgrs') }}"
+  become: yes
+  gather_facts: false
+
+  tasks:
+    - name: Validate external networks configuration
+      fail:
+        msg: "dashboard_external_networks variable is not defined or empty"
+      when: dashboard_external_networks is not defined or dashboard_external_networks | length == 0
+      tags: [validation]
+
+    - name: Display external networks to be configured
+      debug:
+        msg: "Adding firewall access for external networks: {{ dashboard_external_networks }}"
+      tags: [info]
+
+    - name: Check if firewalld is running
+      systemd:
+        name: firewalld
+      register: firewalld_status
+      tags: [validation]
+
+    - name: Add external networks to public zone for dashboard and management access
+      ansible.posix.firewalld:
+        zone: public
+        source: "{{ item }}"
+        permanent: true
+        immediate: true
+        state: enabled
+      loop: "{{ dashboard_external_networks }}"
+      register: firewall_rules
+      when: firewalld_status.status.ActiveState == "active"
+      tags: [firewall]
+
+    - name: Verify firewall configuration
+      command: firewall-cmd --list-sources --zone=public
+      register: current_sources
+      changed_when: false
+      tags: [verification]
+
+    - name: Display current firewall sources
+      debug:
+        msg: "Current firewall sources in public zone: {{ current_sources.stdout }}"
+      when: current_sources is defined
+      tags: [verification, info]
