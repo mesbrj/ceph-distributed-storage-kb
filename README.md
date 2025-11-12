@@ -1,11 +1,8 @@
 # ceph-distributed-storage-kb
 
-[ceph-ansible](https://github.com/ceph/ceph-ansible) containerized deployment on virtualized Fedora Server Hosts using old SATA HDDs (from Hypervisors) as OSDs.
+[ceph-ansible](https://github.com/ceph/ceph-ansible) containerized deployment on virtualized Fedora Server nodes using old SATA HDDs (from Hypervisors) as OSDs.
+- Ceph Pools for RDB images/block-devices
 
-- Ceph Pools for RDB images/block-devices:
-    * Hypervidors (VM disks/block-devices): KVM / Proxmox / Hyper-V
-    * OpenStack / Opennebula: block-devices
-    * Kubernetes: Rook Storage Operator (Persistent Volumes)
 
 ---
 
@@ -15,7 +12,7 @@ git clone git@github.com:ceph/ceph-ansible.git deploy/
 
 cp ceph-ansible/*.yml deploy/
 cp ceph-ansible/inventory.ini deploy/
-cp ceph-ansible/group_vars/ deploy/group_vars/
+cp ceph-ansible/group_vars/*.yml deploy/group_vars/
 ```
 
 ```bash
