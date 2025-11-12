@@ -1,8 +1,9 @@
 # ceph-distributed-storage-kb
 
+![](/ceph-ansible/docs/img/Ceph-Lab.png){: style="float: left; margin-left: 20px; margin-top: 100px; width: 400px;" }
+
 [ceph-ansible](https://github.com/ceph/ceph-ansible) containerized deployment on virtualized Fedora Server nodes using old SATA HDDs (from Hypervisors) as OSDs.
 - Ceph Pools for RDB images/block-devices
-
 
 ---
 
@@ -16,7 +17,15 @@ cp ceph-ansible/group_vars/*.yml deploy/group_vars/
 ```
 
 ```bash
+python(3) -m venv deploy/venv
+source deploy/venv/bin/activate
+```
+
+```bash
 cd deploy
+
+pip install -r requirements.txt
+ansible-galaxy install -r requirements.yml
 
 ansible-playbook -v -i inventory.ini fedora-pre-deployment.yml
 
@@ -74,6 +83,8 @@ ansible-playbook -v -i inventory.ini fedora-post-deployment.yml
 ### Linux KVM (QEMU/libvirt) / [Windows Hyper-V](https://docs.ceph.com/en/reef/rbd/rbd-windows/)
 
 ### Rook Storage Operator for Kubernetes
+
+Using ceph-ansible deployed Ceph cluster as backend (external) storage for Rook Operator in Kubernetes.
 
 ## Lab improvements
 
