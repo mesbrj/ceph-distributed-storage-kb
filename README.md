@@ -1,6 +1,6 @@
 # ceph-distributed-storage-kb
 
-![](/ceph-ansible/docs/img/Ceph-Lab.png){: style="float: left; margin-left: 20px; margin-top: 100px; width: 400px;" }
+<img src="/ceph-ansible/docs/img/Ceph-Lab.png" style="float: left; margin-left: 20px; margin-top: 100px; width: 400px;" alt="Ceph Lab Diagram" />
 
 [ceph-ansible](https://github.com/ceph/ceph-ansible) containerized deployment on virtualized Fedora Server nodes using old SATA HDDs (from Hypervisors) as OSDs.
 - Ceph Pools for RDB images/block-devices
