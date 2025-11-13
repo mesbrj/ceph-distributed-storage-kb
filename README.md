@@ -79,6 +79,10 @@ ansible-playbook -v -i inventory.ini fedora-post-deployment.yml
 
 ## Linux KVM (QEMU/libvirt) / [Windows Hyper-V](https://docs.ceph.com/en/reef/rbd/rbd-windows/)
 
+## Banchmarking Ceph RBD
+
+Throughput, IOPS and latency measurements with fine-tuning tests using [FIO (Flexible I/O tester)](https://fio.readthedocs.io/en/latest/).
+
 ## Rook Storage Operator for Kubernetes
 
 Using ceph-ansible deployed Ceph cluster as backend (external) storage for Rook Operator in Kubernetes.
@@ -107,6 +111,6 @@ Using ceph-ansible deployed Ceph cluster as backend (external) storage for Rook 
 - [ceph-ansible](https://docs.ceph.com/projects/ceph-ansible/en/latest/) - [containerized deployment](https://docs.ceph.com/projects/ceph-ansible/en/latest/installation/containerized.html)
 - [cephadm](https://docs.ceph.com/en/latest/cephadm/) and [cephadm-ansible](https://github.com/ceph/cephadm-ansible)
 - [Rook - Storage Operators for Kubernetes](https://rook.io/)
-- [How (not) to shut down a Ceph cluster](https://www.croit.io/blog/how-not-to-shut-down-a-ceph-cluster) / [Shutting down and restarting the cluster](https://documentation.suse.com/ses/7.1/html/ses-all/admin-caasp-cluster.html) / [A completely shutdown and restart procedure](https://www.ibm.com/docs/en/storage-ceph/8.1.0?topic=cluster-powering-down-rebooting-that-uses-systemctl-commands)
-- 
-- 
+- [How (not) to shut down a Ceph cluster](https://www.croit.io/blog/how-not-to-shut-down-a-ceph-cluster) \ [Shutting down and restarting the cluster](https://documentation.suse.com/ses/7.1/html/ses-all/admin-caasp-cluster.html) \ [A completely shutdown and restart procedure](https://www.ibm.com/docs/en/storage-ceph/8.1.0?topic=cluster-powering-down-rebooting-that-uses-systemctl-commands)
+- [Benchmark Persistent Disk performance on a Linux VM (GCP Compute Engine)](https://docs.cloud.google.com/compute/docs/disks/benchmarking-pd-performance-linux)
+
