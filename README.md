@@ -34,7 +34,6 @@ ansible-playbook -v -i inventory.ini site-container.yml
 ansible-playbook -v -i inventory.ini fedora-post-deployment.yml
 ```
 
-
 |ceph-ansible site-container.yml playbook|
 |:-:|
 |![](/ceph-ansible/docs/img/ceph-ansible-deployment.png)|
@@ -78,22 +77,36 @@ ansible-playbook -v -i inventory.ini fedora-post-deployment.yml
 |:-:|:-:|:-:|
 |![](/ceph-ansible/docs/img/restarting_1.png)|![](/ceph-ansible/docs/img/restarting_2.png)|![](/ceph-ansible/docs/img/restarting_3.png)|
 
-## RDB images / block-devices usage examples:
+## Linux KVM (QEMU/libvirt) / [Windows Hyper-V](https://docs.ceph.com/en/reef/rbd/rbd-windows/)
 
-### Linux KVM (QEMU/libvirt) / [Windows Hyper-V](https://docs.ceph.com/en/reef/rbd/rbd-windows/)
-
-### Rook Storage Operator for Kubernetes
+## Rook Storage Operator for Kubernetes
 
 Using ceph-ansible deployed Ceph cluster as backend (external) storage for Rook Operator in Kubernetes.
 
-## Lab improvements
+## Ceph RGW (Rados Gateway) object storage (S3 compatible)
 
-### Ceph RGW (Rados Gateway) object storage (S3 compatible)
+## Infrastructure improvements
+
+![](/ceph-ansible/docs/img/Ceph-Lab_update.png)
+*requirements:*
+- One Single-Board-Computer with at least 2 Ethernet NICs
+    - Rpi3s with USB Ethernet adapters are a nightmare (ate least in my experience)
+- Two simple flat switches
+- One additional NIC in each Hypervisor
+
+*Since it's a Lab environment no Out-Of-Band and Management networks are needed.*
+
+## Ceph Multi-site
+
+- Multi-site block mirroring
+- Multi-site object storage (RGW)
 
 
-*References and general information*
+### *References and general information*
 
 - [ceph-ansible](https://docs.ceph.com/projects/ceph-ansible/en/latest/) - [containerized deployment](https://docs.ceph.com/projects/ceph-ansible/en/latest/installation/containerized.html)
 - [cephadm](https://docs.ceph.com/en/latest/cephadm/) and [cephadm-ansible](https://github.com/ceph/cephadm-ansible)
 - [Rook - Storage Operators for Kubernetes](https://rook.io/)
 - [How (not) to shut down a Ceph cluster](https://www.croit.io/blog/how-not-to-shut-down-a-ceph-cluster) / [Shutting down and restarting the cluster](https://documentation.suse.com/ses/7.1/html/ses-all/admin-caasp-cluster.html) / [A completely shutdown and restart procedure](https://www.ibm.com/docs/en/storage-ceph/8.1.0?topic=cluster-powering-down-rebooting-that-uses-systemctl-commands)
+- 
+- 
