@@ -77,7 +77,11 @@ ansible-playbook -v -i inventory.ini fedora-post-deployment.yml
 |:-:|:-:|:-:|
 |![](/ceph-ansible/docs/img/restarting_1.png)|![](/ceph-ansible/docs/img/restarting_2.png)|![](/ceph-ansible/docs/img/restarting_3.png)|
 
-## Linux KVM (QEMU/libvirt) / [Windows Hyper-V](https://docs.ceph.com/en/reef/rbd/rbd-windows/)
+## Linux KVM (QEMU/libvirt)
+
+|libvirt pool (virsh / virt-manager) for RBD| FreeBSD guest installed on Ceph RBD disk|
+|:-:|:-:|
+|![](/ceph-ansible/docs/img/libvirt_rbd_storage_pool_.png)|![](/ceph-ansible/docs/img/FreeBSD-Guest-RBD-Disk.png)|
 
 ## Banchmarking Ceph RBD
 
@@ -111,6 +115,8 @@ Using ceph-ansible deployed Ceph cluster as backend (external) storage for Rook 
 - [ceph-ansible](https://docs.ceph.com/projects/ceph-ansible/en/latest/) - [containerized deployment](https://docs.ceph.com/projects/ceph-ansible/en/latest/installation/containerized.html)
 - [cephadm](https://docs.ceph.com/en/latest/cephadm/) and [cephadm-ansible](https://github.com/ceph/cephadm-ansible)
 - [Rook - Storage Operators for Kubernetes](https://rook.io/)
-- [How (not) to shut down a Ceph cluster](https://www.croit.io/blog/how-not-to-shut-down-a-ceph-cluster) \ [Shutting down and restarting the cluster](https://documentation.suse.com/ses/7.1/html/ses-all/admin-caasp-cluster.html) \ [A completely shutdown and restart procedure](https://www.ibm.com/docs/en/storage-ceph/8.1.0?topic=cluster-powering-down-rebooting-that-uses-systemctl-commands)
-- [Benchmark Persistent Disk performance on a Linux VM (GCP Compute Engine)](https://docs.cloud.google.com/compute/docs/disks/benchmarking-pd-performance-linux)
+- [How (not) to shut down a Ceph cluster (Croit)](https://www.croit.io/blog/how-not-to-shut-down-a-ceph-cluster) \ [Shutting down and restarting the cluster (Suse)](https://documentation.suse.com/ses/7.1/html/ses-all/admin-caasp-cluster.html) \ [A completely shutdown and restart procedure (IBM)](https://www.ibm.com/docs/en/storage-ceph/8.1.0?topic=cluster-powering-down-rebooting-that-uses-systemctl-commands)
+- [Benchmark Persistent Disk performance on a Linux VM (Google)](https://docs.cloud.google.com/compute/docs/disks/benchmarking-pd-performance-linux)
+- [QEMU](https://docs.ceph.com/en/latest/rbd/qemu-rbd/), [libvirt](https://docs.ceph.com/en/latest/rbd/libvirt/) and RBD \ [Windows Hyper-V](https://docs.ceph.com/en/reef/rbd/rbd-windows/) and RBD
+- [libvirt pool (virsh / virt-manager)](https://daegonk.medium.com/ceph-rbd-for-virtual-machine-images-70305e1d1d3b) for RBD
 
